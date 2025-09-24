@@ -1,0 +1,51 @@
+SECTOR-AWARE PERP-TO-PERP RESEARCH - BASELINE BACKTEST
+============================================================
+Execution completed at: 2025-09-23 20:00:21.194771
+
+CONFIGURATION:
+  Data Directory: data/binance_30m
+  Funding Window: 8h
+  Notional per Symbol: $10,000
+  Leverage: 1.0x
+  Spot Fees: 10 bps
+  Perp Fees: 4.5 bps
+  Epsilon Buffer: 2.0 bps
+  Basis Stop: 100 bps
+
+RESULTS SUMMARY:
+
+Buy & Hold (buy_hold):
+  Total Return: 57.66%
+  Annualized Return: 19.91%
+  Volatility: 68.25%
+  Sharpe Ratio: 0.26
+  Max Drawdown: -64.72%
+  Fees Paid: $283.60
+
+Naive Hedged Carry (hedged_carry):
+  Total Return: -3.20%
+  Annualized Return: -1.29%
+  Volatility: 0.47%
+  Sharpe Ratio: -7.04
+  Max Drawdown: -3.20%
+  Fees Paid: $345.23
+  Funding PnL: $-3175.21
+  Basis PnL: $0.00
+
+Buy & Hold (buy_hold_majors):
+  Total Return: 348.25%
+  Annualized Return: 64.91%
+  Volatility: 47.89%
+  Sharpe Ratio: 1.31
+  Max Drawdown: -41.45%
+  Fees Paid: $109.74
+
+Naive Hedged Carry (hedged_carry_majors):
+  Total Return: 0.00%
+  Annualized Return: 0.00%
+  Volatility: 0.00%
+  Sharpe Ratio: 0.00
+  Max Drawdown: 0.00%
+  Fees Paid: $0.00
+  Funding PnL: $0.00
+  Basis PnL: $0.00
