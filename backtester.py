@@ -44,6 +44,11 @@ class BacktesterConfig:
         self.basis_stop_bps = 100  # Stop loss on basis drift
         self.bh_rebalance = None  # None = never, "monthly" = monthly
         
+        # Trading configuration
+        self.maker_fraction = 0.5      # 50% maker / 50% taker assumption
+        self.hysteresis_in_bps = 12    # Enter threshold (bps)
+        self.hysteresis_out_bps = 6    # Exit threshold (bps)
+        
         # Symbol selection
         self.symbols = "all"  # "all" or list of specific symbols
         self.majors_only = ["BTCUSDT", "ETHUSDT"]
@@ -145,11 +150,17 @@ class Backtester:
         return resampled
     
     def calculate_fees(self, notional: float, is_spot: bool = False) -> float:
-        """Calculate trading fees for a given notional."""
+        """Calculate trading fees for a given notional with maker/taker fraction."""
         if is_spot:
+            # Spot trades are always taker
             return notional * (self.config.fees['spot_taker_bps'] / 10000)
         else:
-            return notional * (self.config.fees['perp_taker_bps'] / 10000)
+            # Perp trades: mix of maker and taker
+            maker_rate = self.config.fees['perp_maker_bps'] / 10000
+            taker_rate = self.config.fees['perp_taker_bps'] / 10000
+            effective_rate = (self.config.maker_fraction * maker_rate + 
+                            (1 - self.config.maker_fraction) * taker_rate)
+            return notional * effective_rate
     
     def buy_and_hold_baseline(self, symbols: List[str] = None) -> Dict:
         """Implement Buy & Hold baseline strategy."""
@@ -311,7 +322,7 @@ class Backtester:
             raise ValueError("No common time periods found across symbols")
         
         # Initialize positions for each symbol (perp-to-perp: long and short perp positions)
-        positions = {symbol: {'long_perp_size': 0, 'short_perp_size': 0, 'entry_basis': 0, 'prev_basis': 0} for symbol in symbols}
+        positions = {symbol: {'long_perp_size': 0, 'short_perp_size': 0, 'entry_basis': 0, 'prev_basis': 0, 'in_position': False} for symbol in symbols}
         
         # Start with initial capital
         initial_capital = self.config.notional_usd * len(symbols)
@@ -337,12 +348,19 @@ class Backtester:
                 if pd.isna(spot_price) or pd.isna(perp_price) or pd.isna(funding_rate):
                     continue
                 
-                # Calculate threshold for trading
-                total_fees_bps = self.config.fees['spot_taker_bps'] + self.config.fees['perp_taker_bps']
+                # Calculate threshold for perp-to-perp trading
+                # Perp-to-perp: 2 legs × effective perp rate + epsilon
+                effective_perp_rate = (self.config.maker_fraction * self.config.fees['perp_maker_bps'] + 
+                                     (1 - self.config.maker_fraction) * self.config.fees['perp_taker_bps'])
+                total_fees_bps = 2 * effective_perp_rate  # Both legs are perp trades
                 threshold = (total_fees_bps + self.config.epsilon_bps) / 10000
                 
-                # Determine position based on funding rate (perp-to-perp strategy)
-                if abs(funding_rate) > threshold:
+                # Hysteresis logic: different thresholds for entry and exit
+                entry_threshold = self.config.hysteresis_in_bps / 10000
+                exit_threshold = self.config.hysteresis_out_bps / 10000
+                
+                # Determine position based on funding rate with hysteresis
+                if not positions[symbol]['in_position'] and abs(funding_rate) > entry_threshold:
                     # Calculate leveraged notional
                     leveraged_notional = self.config.notional_usd * self.config.leverage
                     
@@ -374,8 +392,9 @@ class Backtester:
                     positions[symbol]['short_perp_size'] = target_short_perp
                     positions[symbol]['entry_basis'] = 0  # No basis in perp-to-perp
                     positions[symbol]['prev_basis'] = 0
-                else:
-                    # Flatten position when signal drops below threshold
+                    positions[symbol]['in_position'] = True
+                elif positions[symbol]['in_position'] and abs(funding_rate) < exit_threshold:
+                    # Exit position when signal drops below exit threshold (hysteresis)
                     if positions[symbol]['long_perp_size'] != 0 or positions[symbol]['short_perp_size'] != 0:
                         # Calculate fees for closing trades
                         if abs(positions[symbol]['long_perp_size']) > 1e-8:
@@ -387,7 +406,7 @@ class Backtester:
                             period_fees += short_fees
                         
                         # Close positions
-                        positions[symbol] = {'long_perp_size': 0, 'short_perp_size': 0, 'entry_basis': 0, 'prev_basis': 0}
+                        positions[symbol] = {'long_perp_size': 0, 'short_perp_size': 0, 'entry_basis': 0, 'prev_basis': 0, 'in_position': False}
                 
                 # Calculate PnL for this period
                 if positions[symbol]['long_perp_size'] != 0 or positions[symbol]['short_perp_size'] != 0:

@@ -34,7 +34,7 @@ class FundingAnalyzer:
         
         print(f"Loaded {len(self.data)} symbols for analysis")
         
-    def calculate_signal_coverage(self, threshold_bps: float = 16.5) -> Dict:
+    def calculate_signal_coverage(self, threshold_bps: float = 11.0) -> Dict:
         """Calculate signal coverage for different thresholds."""
         print(f"\n{'='*60}")
         print(f"SIGNAL COVERAGE ANALYSIS (Threshold: {threshold_bps} bps)")
@@ -178,7 +178,7 @@ class FundingAnalyzer:
         majors = ['BTCUSDT', 'ETHUSDT']
         non_majors = [s for s in self.data.keys() if s not in majors]
         
-        threshold = 16.5 / 10000  # 16.5 bps threshold
+        threshold = 11.0 / 10000  # 11 bps threshold (perp-to-perp)
         
         results = {
             'majors': {'symbols': majors, 'coverage': {}, 'magnitude': {}},
@@ -239,7 +239,7 @@ class FundingAnalyzer:
         symbols = list(self.resampled_data.keys())
         coverage_data = []
         
-        threshold = 16.5 / 10000
+        threshold = 11.0 / 10000
         for symbol in symbols:
             if symbol in self.resampled_data and 'funding_rate_30m' in self.resampled_data[symbol].columns:
                 abs_funding = self.resampled_data[symbol]['funding_rate_30m'].abs()
@@ -251,7 +251,7 @@ class FundingAnalyzer:
                 coverage_data.append(0)
         
         axes[0, 0].bar(symbols, coverage_data, color='skyblue', alpha=0.7)
-        axes[0, 0].set_title('Signal Coverage by Symbol (16.5 bps threshold)')
+        axes[0, 0].set_title('Signal Coverage by Symbol (11 bps threshold)')
         axes[0, 0].set_ylabel('Coverage %')
         axes[0, 0].tick_params(axis='x', rotation=45)
         

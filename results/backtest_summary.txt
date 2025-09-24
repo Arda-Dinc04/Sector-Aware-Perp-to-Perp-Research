@@ -1,6 +1,6 @@
 SECTOR-AWARE PERP-TO-PERP RESEARCH - BASELINE BACKTEST
 ============================================================
-Execution completed at: 2025-09-23 20:00:21.194771
+Execution completed at: 2025-09-24 11:18:28.466822
 
 CONFIGURATION:
   Data Directory: data/binance_30m
@@ -23,13 +23,13 @@ Buy & Hold (buy_hold):
   Fees Paid: $283.60
 
 Naive Hedged Carry (hedged_carry):
-  Total Return: -3.20%
-  Annualized Return: -1.29%
+  Total Return: -3.54%
+  Annualized Return: -1.43%
   Volatility: 0.47%
-  Sharpe Ratio: -7.04
-  Max Drawdown: -3.20%
-  Fees Paid: $345.23
-  Funding PnL: $-3175.21
+  Sharpe Ratio: -7.36
+  Max Drawdown: -3.54%
+  Fees Paid: $188.27
+  Funding PnL: $-3701.55
   Basis PnL: $0.00
 
 Buy & Hold (buy_hold_majors):

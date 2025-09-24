@@ -1,5 +1,5 @@
 Strategy,Symbols,Total Return (%),Annualized Return (%),Volatility (%),Sharpe Ratio,Max Drawdown (%),Fees Paid ($),Funding PnL ($),Basis PnL ($)
 Buy & Hold,hold,0.58,0.20,0.68,0.26,-0.65,283.60,,
-Naive Hedged Carry,carry,-0.03,-0.01,0.00,-7.04,-0.03,345.23,-3175.21,0.00
+Naive Hedged Carry,carry,-0.04,-0.01,0.00,-7.36,-0.04,188.27,-3701.55,0.00
 Buy & Hold,majors,3.48,0.65,0.48,1.31,-0.41,109.74,,
 Naive Hedged Carry,majors,0.00,0.00,0.00,0.00,0.00,0.00,0.00,0.00
