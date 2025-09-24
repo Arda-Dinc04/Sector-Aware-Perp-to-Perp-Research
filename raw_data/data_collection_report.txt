@@ -1,0 +1,38 @@
+================================================================================
+MULTI-VENUE DATA COLLECTION SUMMARY
+================================================================================
+Collection Date: 2025-09-24 12:01:41
+Total Records: 242
+
+VENUE BREAKDOWN:
+  BINANCE: 242 records
+
+ASSET BREAKDOWN:
+  AAVE: 22 records
+  ARB: 22 records
+  BTC: 22 records
+  COMP: 22 records
+  CRV: 22 records
+  DOGE: 22 records
+  ETH: 22 records
+  GALA: 22 records
+  IMX: 22 records
+  OP: 22 records
+  UNI: 22 records
+
+FUNDING RATE ANALYSIS:
+  Median: 0.000046 (0.46 bps)
+  Mean: 0.000029 (0.29 bps)
+  Std Dev: 0.000098 (0.98 bps)
+  Range: -0.000717 to 0.000100
+  Records: 242
+
+DATA QUALITY:
+  Total Records: 242
+  Missing Funding Rates: 0
+  Missing Mark Prices: 0
+  Missing Index Prices: 0
+  Mark-Index Correlation: 1.0000
+
+RECOMMENDATIONS:
+  ✅ Data quality looks good for backtesting
