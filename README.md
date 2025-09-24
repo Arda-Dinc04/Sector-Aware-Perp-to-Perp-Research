@@ -63,40 +63,44 @@ This project implements and evaluates baseline trading strategies for perpetual 
 
 ### **Signal Coverage Analysis (16.5 bps threshold)**
 
-| Symbol | Coverage % | Active Windows | Avg Funding When Active | Max Funding |
-|--------|------------|---------------|------------------------|-------------|
-| **COMPUSDT** | 0.73% | 24/3,286 | 0.000159 | 0.014927 |
-| **GALAUSDT** | 0.27% | 9/3,286 | 0.000137 | 0.007500 |
-| **IMXUSDT** | 0.27% | 9/3,286 | 0.000115 | 0.025000 |
-| **CRVUSDT** | 0.21% | 7/3,286 | 0.000127 | 0.006827 |
-| **OPUSDT** | 0.03% | 1/3,286 | 0.000118 | 0.002026 |
-| **ARBUSDT** | 0.00% | 0/2,747 | 0.000117 | 0.001286 |
-| **AAVEUSDT** | 0.00% | 0/3,286 | 0.000099 | 0.001113 |
-| **ETHUSDT** | 0.00% | 0/3,286 | 0.000086 | 0.001017 |
-| **BTCUSDT** | 0.00% | 0/3,286 | 0.000082 | 0.001138 |
-| **UNIUSDT** | 0.00% | 0/3,286 | 0.000102 | 0.001190 |
-| **DOGEUSDT** | 0.00% | 0/3,286 | 0.000102 | 0.001028 |
+| Symbol       | Coverage % | Active Windows | Avg Funding When Active | Max Funding |
+| ------------ | ---------- | -------------- | ----------------------- | ----------- |
+| **COMPUSDT** | 0.73%      | 24/3,286       | 0.000159                | 0.014927    |
+| **GALAUSDT** | 0.27%      | 9/3,286        | 0.000137                | 0.007500    |
+| **IMXUSDT**  | 0.27%      | 9/3,286        | 0.000115                | 0.025000    |
+| **CRVUSDT**  | 0.21%      | 7/3,286        | 0.000127                | 0.006827    |
+| **OPUSDT**   | 0.03%      | 1/3,286        | 0.000118                | 0.002026    |
+| **ARBUSDT**  | 0.00%      | 0/2,747        | 0.000117                | 0.001286    |
+| **AAVEUSDT** | 0.00%      | 0/3,286        | 0.000099                | 0.001113    |
+| **ETHUSDT**  | 0.00%      | 0/3,286        | 0.000086                | 0.001017    |
+| **BTCUSDT**  | 0.00%      | 0/3,286        | 0.000082                | 0.001138    |
+| **UNIUSDT**  | 0.00%      | 0/3,286        | 0.000102                | 0.001190    |
+| **DOGEUSDT** | 0.00%      | 0/3,286        | 0.000102                | 0.001028    |
 
 ### **Key Funding Rate Insights**
 
 #### **1. Signal Coverage (16.5 bps threshold)**
+
 - **Average coverage across all symbols: 0.14%** (extremely low)
 - **Range: 0.00% - 0.73%** (COMPUSDT has highest coverage)
 - **Majors (BTC/ETH): 0.00% coverage** (no trading opportunities)
 - **Non-majors: 0.17% average coverage** (slightly better but still very low)
 
 #### **2. Funding Magnitude Analysis**
+
 - **Average magnitude: 0.000113** (11.3 bps)
 - **Range: 0.000082 - 0.000159** (8.2 - 15.9 bps)
 - **Majors have lower magnitude** than non-majors
 - **Most funding rates are well below trading threshold**
 
 #### **3. Strategy Performance Decomposition**
+
 - **Average trade count per symbol: 7.2** (very few trades)
 - **Average holding periods: 1,970** (long holding periods due to infrequent signals)
 - **PnL breakdown**: Primarily driven by fees rather than funding capture
 
 #### **4. Majors vs Non-Majors Comparison**
+
 - **Majors average coverage: 0.00%** (no trading opportunities)
 - **Non-majors average coverage: 0.17%** (minimal trading opportunities)
 - **Non-majors have higher funding magnitude** but still insufficient for profitable trading
@@ -112,11 +116,13 @@ This project implements and evaluates baseline trading strategies for perpetual 
 ### **Implications for Sector-Aware Strategies**
 
 The analysis reveals why simple funding rate arbitrage fails:
+
 - **Insufficient opportunities**: 99.86% of time periods have no tradable signals
 - **High cost structure**: Trading fees exceed funding rate spreads
 - **Market efficiency**: Funding rates quickly adjust to eliminate arbitrage opportunities
 
 This validates the need for sophisticated sector-aware strategies that can:
+
 - **Predict funding rate patterns** before they occur
 - **Identify cross-symbol opportunities** not captured by simple thresholds
 - **Optimize timing** to reduce trading costs
